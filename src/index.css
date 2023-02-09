@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: -moz-scrollbars-none; /* Hide Scrollbar (Firefox) */
+  -ms-overflow-style: none; /* Hide Scrollbar (IE 10+) */
+}
+
+html,
+body {
+  height: 100%;
+}
+
+/* Hide Scrollbar (Chrome, Safari, newer versions of Opera) */
+*::-webkit-scrollbar {
+  width: 0 !important;
+}
