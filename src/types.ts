@@ -14,3 +14,13 @@ export type SelectInputOption = {
   value: string;
   label: string;
 };
+
+export interface LaneFormData {
+  source: string;
+  destination: string;
+  truckType: string;
+  numberOfTrips: string;
+  loadType: string;
+  priceCapPerTrip: string;
+  tickPrice: string;
+}
