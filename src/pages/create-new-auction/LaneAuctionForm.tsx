@@ -1,9 +1,12 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 
-import { LaneAuctionData } from '../../features/auction.types';
+import { LaneAuctionData } from '../../features/auction/auction.types';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
-import { selectIsCreateNewAuctionClicked, setNewLaneDetails } from '../../features/auction.slice';
+import {
+  selectIsCreateNewAuctionClicked,
+  setNewLaneDetails,
+} from '../../features/auction/auction.slice';
 
 import LaneFormItem from './LaneFormItem';
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { AuctionType } from '../../features/auction.types';
+import { AuctionType } from '../../features/auction/auction.types';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import {
@@ -10,7 +10,7 @@ import {
   selectNewAuctionConfigurationDetails,
   setCreateNewAuctionClicked,
   clearNewAuctionConfigurationDetails,
-} from '../../features/auction.slice';
+} from '../../features/auction/auction.slice';
 
 import BlackButton from '../../components/BlackButton';
 import AuctionConfiguration from './AuctionConfiguration';

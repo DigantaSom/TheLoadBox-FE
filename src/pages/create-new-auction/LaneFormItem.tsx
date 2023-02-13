@@ -3,7 +3,7 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import DeleteIcon from '../../images/delete-icon.png';
 import RightArrowIcon from '../../images/right-arrow-icon.png';
 
-import { LaneAuctionData } from '../../features/auction.types';
+import { LaneAuctionData } from '../../features/auction/auction.types';
 import K from '../../constants';
 
 interface LaneFormItemProps {

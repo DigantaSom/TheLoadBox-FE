@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import {
   selectIsCreateNewAuctionClicked,
   setNewAuctionConfigurationDetails,
-} from '../../features/auction.slice';
+} from '../../features/auction/auction.slice';
 
 import K from '../../constants';
 
