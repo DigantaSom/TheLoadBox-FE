@@ -22,7 +22,7 @@ const auctionSlice = createSlice({
     setNewAuctionConfigurationDetails: (state, action: PayloadAction<AuctionConfigurationData>) => {
       state.newAuctionConfigurationDetails = action.payload;
     },
-    clearNewAuctionConfigurationDetails: state => {
+    clearNewAuctionDetails: state => {
       state.isCreateNewAuctionClicked = false;
       state.newLaneDetails = null;
       state.newAuctionConfigurationDetails = null;
@@ -44,7 +44,7 @@ export const {
   setCreateNewAuctionClicked,
   setNewLaneDetails,
   setNewAuctionConfigurationDetails,
-  clearNewAuctionConfigurationDetails,
+  clearNewAuctionDetails,
 } = auctionSlice.actions;
 
 export default auctionSlice.reducer;

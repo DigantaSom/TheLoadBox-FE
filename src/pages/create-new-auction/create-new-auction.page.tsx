@@ -9,7 +9,7 @@ import {
   selectNewLaneDetails,
   selectNewAuctionConfigurationDetails,
   setCreateNewAuctionClicked,
-  clearNewAuctionConfigurationDetails,
+  clearNewAuctionDetails,
 } from '../../features/auction/auction.slice';
 
 import BlackButton from '../../components/BlackButton';
@@ -51,7 +51,7 @@ const CreateAuctionPage = () => {
         });
 
         // clear the newly created auction data from the redux state
-        dispatch(clearNewAuctionConfigurationDetails());
+        dispatch(clearNewAuctionDetails());
 
         // TODO: navigate to some other page
       }
