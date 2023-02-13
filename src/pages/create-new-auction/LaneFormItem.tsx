@@ -1,17 +1,22 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 
+import { LaneAuctionData } from '../../features/auction/auction.types';
+
+import K from '../../constants';
+
 import DeleteIcon from '../../images/delete-icon.png';
 import RightArrowIcon from '../../images/right-arrow-icon.png';
-
-import { LaneAuctionData } from '../../features/auction/auction.types';
-import K from '../../constants';
 
 interface LaneFormItemProps {
   laneNumberToDisplay: number;
   laneNumber: number;
   totalLanes: number;
   handleDeleteLane: (laneNumber: number) => void;
-  handleSetLaneFormData: (laneFormData: LaneAuctionData, laneNumber: number) => void;
+  handleSetLaneFormData: (
+    laneFormData: LaneAuctionData,
+    laneNumber: number,
+    canSave: boolean
+  ) => void;
 }
 
 const LaneFormItem: FC<LaneFormItemProps> = ({
@@ -31,13 +36,23 @@ const LaneFormItem: FC<LaneFormItemProps> = ({
     tickPrice: '',
   });
 
-  useEffect(() => {
-    handleSetLaneFormData(laneFormData, laneNumber);
-    // eslint-disable-next-line
-  }, [laneFormData, laneNumber]);
-
   const { source, destination, truckType, numberOfTrips, loadType, priceCapPerTrip, tickPrice } =
     laneFormData;
+
+  const canSave = [
+    source,
+    destination,
+    truckType,
+    numberOfTrips,
+    loadType,
+    priceCapPerTrip,
+    tickPrice,
+  ].every(Boolean);
+
+  useEffect(() => {
+    handleSetLaneFormData(laneFormData, laneNumber, canSave);
+    // eslint-disable-next-line
+  }, [laneFormData, laneNumber, canSave]);
 
   const onChangeSource = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

@@ -7,6 +7,7 @@ const initialState: AuctionState = {
   isCreateNewAuctionClicked: false,
   newLaneDetails: null,
   newAuctionConfigurationDetails: null,
+  canSaveLaneAuction: false,
 };
 
 const auctionSlice = createSlice({
@@ -16,8 +17,14 @@ const auctionSlice = createSlice({
     setCreateNewAuctionClicked: (state, action: PayloadAction<boolean>) => {
       state.isCreateNewAuctionClicked = action.payload;
     },
+    toggle_canSaveLaneAuction: (state, action: PayloadAction<boolean>) => {
+      state.canSaveLaneAuction = action.payload;
+    },
     setNewLaneDetails: (state, action: PayloadAction<NewLanesData>) => {
-      state.newLaneDetails = action.payload;
+      // we can add other criteria here in the future, if needed
+      if (state.canSaveLaneAuction) {
+        state.newLaneDetails = action.payload;
+      }
     },
     setNewAuctionConfigurationDetails: (state, action: PayloadAction<AuctionConfigurationData>) => {
       state.newAuctionConfigurationDetails = action.payload;
@@ -34,6 +41,8 @@ const auctionSlice = createSlice({
 export const selectIsCreateNewAuctionClicked = (state: RootState) =>
   state.auction.isCreateNewAuctionClicked;
 
+export const selectCanSaveLaneAuction = (state: RootState) => state.auction.canSaveLaneAuction;
+
 export const selectNewLaneDetails = (state: RootState) => state.auction.newLaneDetails;
 
 export const selectNewAuctionConfigurationDetails = (state: RootState) =>
@@ -42,6 +51,7 @@ export const selectNewAuctionConfigurationDetails = (state: RootState) =>
 // action creators
 export const {
   setCreateNewAuctionClicked,
+  toggle_canSaveLaneAuction,
   setNewLaneDetails,
   setNewAuctionConfigurationDetails,
   clearNewAuctionDetails,

@@ -2,6 +2,7 @@ export interface AuctionState {
   isCreateNewAuctionClicked: boolean;
   newLaneDetails: NewLanesData | null;
   newAuctionConfigurationDetails: AuctionConfigurationData | null;
+  canSaveLaneAuction: boolean;
 }
 
 export type AuctionType = 'lane-auction' | 'lot-auction';

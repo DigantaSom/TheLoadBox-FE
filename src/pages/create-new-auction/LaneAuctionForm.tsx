@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import {
   selectIsCreateNewAuctionClicked,
   setNewLaneDetails,
+  toggle_canSaveLaneAuction,
 } from '../../features/auction/auction.slice';
 
 import LaneFormItem from './LaneFormItem';
@@ -20,7 +21,6 @@ const LaneAuctionForm = () => {
   const [auctionName, setAuctionName] = useState('');
   const [totalLanes, setTotalLanes] = useState(1);
   const [laneArray, setLaneArray] = useState([1]);
-
   const [laneFields, setLaneFields] = useState<Record<number, LaneAuctionData>>({
     1: {
       source: '',
@@ -32,9 +32,14 @@ const LaneAuctionForm = () => {
       tickPrice: '',
     },
   });
+  const [canSaveLaneDetails, setCanSaveLaneDetails] = useState(false);
 
   useEffect(() => {
-    if (isCreateNewAuctionClicked) {
+    dispatch(toggle_canSaveLaneAuction(canSaveLaneDetails && !!auctionName));
+  }, [dispatch, canSaveLaneDetails, auctionName]);
+
+  useEffect(() => {
+    if (canSaveLaneDetails && isCreateNewAuctionClicked) {
       dispatch(
         setNewLaneDetails({
           auctionName,
@@ -42,13 +47,15 @@ const LaneAuctionForm = () => {
         })
       );
     }
-  }, [isCreateNewAuctionClicked, dispatch, auctionName, laneFields]);
+  }, [canSaveLaneDetails, isCreateNewAuctionClicked, dispatch, auctionName, laneFields]);
 
   // console.log(totalLanes, laneArray);
   // console.log(laneFields);
 
   const handleSetLaneFormData = useCallback(
-    (laneFormData: LaneAuctionData, laneNumber: number) => {
+    (laneFormData: LaneAuctionData, laneNumber: number, canSave: boolean) => {
+      setCanSaveLaneDetails(canSave);
+
       const temp_laneFields = { ...laneFields };
       temp_laneFields[laneNumber] = laneFormData;
       setLaneFields(temp_laneFields);

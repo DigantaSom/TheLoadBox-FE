@@ -8,6 +8,7 @@ import {
   selectIsCreateNewAuctionClicked,
   selectNewLaneDetails,
   selectNewAuctionConfigurationDetails,
+  selectCanSaveLaneAuction,
   setCreateNewAuctionClicked,
   clearNewAuctionDetails,
 } from '../../features/auction/auction.slice';
@@ -26,6 +27,7 @@ const CreateAuctionPage = () => {
   const isCreateNewAuctionClicked = useAppSelector(selectIsCreateNewAuctionClicked);
   const newLaneDetails = useAppSelector(selectNewLaneDetails);
   const newAuctionConfigurationDetails = useAppSelector(selectNewAuctionConfigurationDetails);
+  const canSaveLaneAuction = useAppSelector(selectCanSaveLaneAuction);
 
   let initialSelectedOption = '';
 
@@ -38,25 +40,40 @@ const CreateAuctionPage = () => {
   const [selectedAuctionType, setSelectedAuctionType] = useState<AuctionType>(
     initialSelectedOption as AuctionType
   );
+  const [canSaveNewAuctionData, setCanSaveNewAuctionData] = useState(false);
 
   useEffect(() => {
-    if (isCreateNewAuctionClicked) {
-      if (newLaneDetails && newAuctionConfigurationDetails) {
-        console.log(
-          'Ready to send the newly created Auction Data to the backend, after doing some modifications, if needed.'
-        );
-        console.log({
-          newLaneDetails,
-          newAuctionConfigurationDetails,
-        });
+    // we can add other criteria here in the future, if needed
+    setCanSaveNewAuctionData(canSaveLaneAuction);
+  }, [canSaveLaneAuction]);
 
-        // clear the newly created auction data from the redux state
-        dispatch(clearNewAuctionDetails());
+  useEffect(() => {
+    if (
+      isCreateNewAuctionClicked &&
+      canSaveNewAuctionData &&
+      newLaneDetails &&
+      newAuctionConfigurationDetails
+    ) {
+      console.log(
+        'Ready to send the newly created Auction Data to the backend, after doing some modifications, if needed.'
+      );
+      console.log({
+        newLaneDetails,
+        newAuctionConfigurationDetails,
+      });
 
-        // TODO: navigate to some other page
-      }
+      // clear the newly created auction data from the redux state
+      dispatch(clearNewAuctionDetails());
+
+      // TODO: navigate to some other page
     }
-  }, [isCreateNewAuctionClicked, newLaneDetails, newAuctionConfigurationDetails, dispatch]);
+  }, [
+    isCreateNewAuctionClicked,
+    canSaveNewAuctionData,
+    newLaneDetails,
+    newAuctionConfigurationDetails,
+    dispatch,
+  ]);
 
   const handleSelectAuctionType = (auctionType: AuctionType) => {
     setSelectedAuctionType(auctionType);
@@ -89,7 +106,11 @@ const CreateAuctionPage = () => {
           >
             Save as draft
           </div>
-          <BlackButton title="Create Auction" handleClickButton={handleClickCreateAuction} />
+          <BlackButton
+            title="Create Auction"
+            handleClickButton={handleClickCreateAuction}
+            disabled={!canSaveNewAuctionData}
+          />
         </div>
       </header>
 
