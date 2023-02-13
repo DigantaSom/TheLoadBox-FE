@@ -1,18 +1,24 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+
+import { LaneAuctionData } from '../../features/auction.types';
+
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import { selectIsCreateNewAuctionClicked, setNewLaneDetails } from '../../features/auction.slice';
+
+import LaneFormItem from './LaneFormItem';
 
 import UploadIcon from '../../images/upload-icon.png';
 import AddIcon2 from '../../images/add-icon-2.png';
 
-import { LaneFormData } from '../../types';
-
-import LaneFormItem from './LaneFormItem';
-
 const LaneAuctionForm = () => {
+  const dispatch = useAppDispatch();
+  const isCreateNewAuctionClicked = useAppSelector(selectIsCreateNewAuctionClicked);
+
   const [auctionName, setAuctionName] = useState('');
   const [totalLanes, setTotalLanes] = useState(1);
   const [laneArray, setLaneArray] = useState([1]);
 
-  const [laneFields, setLaneFields] = useState<Record<number, LaneFormData>>({
+  const [laneFields, setLaneFields] = useState<Record<number, LaneAuctionData>>({
     1: {
       source: '',
       destination: '',
@@ -24,11 +30,22 @@ const LaneAuctionForm = () => {
     },
   });
 
+  useEffect(() => {
+    if (isCreateNewAuctionClicked) {
+      dispatch(
+        setNewLaneDetails({
+          auctionName,
+          laneDetails: laneFields,
+        })
+      );
+    }
+  }, [isCreateNewAuctionClicked, dispatch, auctionName, laneFields]);
+
   // console.log(totalLanes, laneArray);
-  console.log(laneFields);
+  // console.log(laneFields);
 
   const handleSetLaneFormData = useCallback(
-    (laneFormData: LaneFormData, laneNumber: number) => {
+    (laneFormData: LaneAuctionData, laneNumber: number) => {
       const temp_laneFields = { ...laneFields };
       temp_laneFields[laneNumber] = laneFormData;
       setLaneFields(temp_laneFields);
@@ -42,7 +59,7 @@ const LaneAuctionForm = () => {
 
   const handleAddLane = () => {
     setTotalLanes(prevState => prevState + 1);
-    setLaneArray(prev => [...prev, prev.length + 1]);
+    setLaneArray(prev => [...prev, prev[prev.length - 1] + 1]);
   };
 
   const handleDeleteLane = (laneNumber: number) => {

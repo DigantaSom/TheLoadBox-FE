@@ -1,7 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { AuctionType } from '../../types';
+import { AuctionType } from '../../features/auction.types';
+
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import {
+  selectIsCreateNewAuctionClicked,
+  selectNewLaneDetails,
+  selectNewAuctionConfigurationDetails,
+  setCreateNewAuctionClicked,
+  clearNewAuctionConfigurationDetails,
+} from '../../features/auction.slice';
 
 import BlackButton from '../../components/BlackButton';
 import AuctionConfiguration from './AuctionConfiguration';
@@ -12,6 +21,11 @@ import BackIcon from '../../images/back-icon.png';
 const CreateAuctionPage = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+  const isCreateNewAuctionClicked = useAppSelector(selectIsCreateNewAuctionClicked);
+  const newLaneDetails = useAppSelector(selectNewLaneDetails);
+  const newAuctionConfigurationDetails = useAppSelector(selectNewAuctionConfigurationDetails);
 
   let initialSelectedOption = '';
 
@@ -25,6 +39,25 @@ const CreateAuctionPage = () => {
     initialSelectedOption as AuctionType
   );
 
+  useEffect(() => {
+    if (isCreateNewAuctionClicked) {
+      if (newLaneDetails && newAuctionConfigurationDetails) {
+        console.log(
+          'Ready to send the newly created Auction Data to the backend, after doing some modifications, if needed.'
+        );
+        console.log({
+          newLaneDetails,
+          newAuctionConfigurationDetails,
+        });
+
+        // clear the newly created auction data from the redux state
+        dispatch(clearNewAuctionConfigurationDetails());
+
+        // TODO: navigate to some other page
+      }
+    }
+  }, [isCreateNewAuctionClicked, newLaneDetails, newAuctionConfigurationDetails, dispatch]);
+
   const handleSelectAuctionType = (auctionType: AuctionType) => {
     setSelectedAuctionType(auctionType);
     if (auctionType === 'lot-auction') {
@@ -32,6 +65,10 @@ const CreateAuctionPage = () => {
     } else {
       navigate('');
     }
+  };
+
+  const handleClickCreateAuction = () => {
+    dispatch(setCreateNewAuctionClicked(true));
   };
 
   const selectedAuctionTypeStyles = 'border-[1px] border-black p-[11px]';
@@ -52,7 +89,7 @@ const CreateAuctionPage = () => {
           >
             Save as draft
           </div>
-          <BlackButton title="Create Auction" handleClickButton={() => {}} />
+          <BlackButton title="Create Auction" handleClickButton={handleClickCreateAuction} />
         </div>
       </header>
 

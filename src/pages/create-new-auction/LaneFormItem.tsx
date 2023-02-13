@@ -3,7 +3,7 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import DeleteIcon from '../../images/delete-icon.png';
 import RightArrowIcon from '../../images/right-arrow-icon.png';
 
-import { LaneFormData } from '../../types';
+import { LaneAuctionData } from '../../features/auction.types';
 import K from '../../constants';
 
 interface LaneFormItemProps {
@@ -11,7 +11,7 @@ interface LaneFormItemProps {
   laneNumber: number;
   totalLanes: number;
   handleDeleteLane: (laneNumber: number) => void;
-  handleSetLaneFormData: (laneFormData: LaneFormData, laneNumber: number) => void;
+  handleSetLaneFormData: (laneFormData: LaneAuctionData, laneNumber: number) => void;
 }
 
 const LaneFormItem: FC<LaneFormItemProps> = ({
@@ -21,7 +21,7 @@ const LaneFormItem: FC<LaneFormItemProps> = ({
   handleDeleteLane,
   handleSetLaneFormData,
 }) => {
-  const [laneFormData, setLaneFormData] = useState<LaneFormData>({
+  const [laneFormData, setLaneFormData] = useState<LaneAuctionData>({
     source: '',
     destination: '',
     truckType: '',

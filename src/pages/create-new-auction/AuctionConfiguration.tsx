@@ -1,8 +1,17 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import {
+  selectIsCreateNewAuctionClicked,
+  setNewAuctionConfigurationDetails,
+} from '../../features/auction.slice';
+
 import K from '../../constants';
 
 const AuctionConfiguration = () => {
+  const dispatch = useAppDispatch();
+  const isCreateNewAuctionClicked = useAppSelector(selectIsCreateNewAuctionClicked);
+
   const auctionDurationHours_inputRef = useRef<HTMLInputElement>(null);
   const auctionDurationMinutes_inputRef = useRef<HTMLInputElement>(null);
   const auctionDurationSeconds_inputRef = useRef<HTMLInputElement>(null);
@@ -13,6 +22,32 @@ const AuctionConfiguration = () => {
   const [auctionDurationSeconds, setAuctionDurationSeconds] = useState(0);
   const [priceValidity, setPriceValidity] = useState(12);
   const [priceValidityUnit, setPriceValidityUnit] = useState('months');
+
+  useEffect(() => {
+    if (isCreateNewAuctionClicked) {
+      dispatch(
+        setNewAuctionConfigurationDetails({
+          auctionDuration: {
+            hours: auctionDurationHours,
+            minutes: auctionDurationMinutes,
+            seconds: auctionDurationSeconds,
+          },
+          priceValidity: {
+            value: priceValidity,
+            unit: priceValidityUnit,
+          },
+        })
+      );
+    }
+  }, [
+    isCreateNewAuctionClicked,
+    dispatch,
+    auctionDurationHours,
+    auctionDurationMinutes,
+    auctionDurationSeconds,
+    priceValidity,
+    priceValidityUnit,
+  ]);
 
   useEffect(() => {
     if (auctionDurationHours > 99) {
