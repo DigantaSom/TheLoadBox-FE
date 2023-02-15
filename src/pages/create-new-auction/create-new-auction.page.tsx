@@ -85,7 +85,9 @@ const CreateAuctionPage = () => {
   };
 
   const handleClickCreateAuction = () => {
-    dispatch(setCreateNewAuctionClicked(true));
+    if (canSaveNewAuctionData) {
+      dispatch(setCreateNewAuctionClicked(true));
+    }
   };
 
   const selectedAuctionTypeStyles = 'border-[1px] border-black p-[11px]';

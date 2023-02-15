@@ -53,19 +53,16 @@ const AuctionConfiguration = () => {
     if (auctionDurationHours > 99) {
       setAuctionDurationHours(99);
     }
-  }, [auctionDurationHours]);
-
-  useEffect(() => {
     if (auctionDurationMinutes > 60) {
       setAuctionDurationMinutes(60);
     }
-  }, [auctionDurationMinutes]);
-
-  useEffect(() => {
     if (auctionDurationSeconds > 60) {
       setAuctionDurationSeconds(60);
     }
-  }, [auctionDurationSeconds]);
+    if (priceValidity < 1) {
+      setPriceValidity(1);
+    }
+  }, [auctionDurationHours, auctionDurationMinutes, auctionDurationSeconds, priceValidity]);
 
   const onClickAuctionDurationHoursContainer = () => {
     auctionDurationHours_inputRef.current?.focus();

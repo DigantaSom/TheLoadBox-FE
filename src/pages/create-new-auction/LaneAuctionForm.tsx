@@ -35,8 +35,40 @@ const LaneAuctionForm = () => {
   const [canSaveLaneDetails, setCanSaveLaneDetails] = useState(false);
 
   useEffect(() => {
+    const laneFields_arr = Object.values(laneFields);
+    // console.log(laneFields_arr);
+
+    for (let i = 0; i < laneFields_arr.length; i++) {
+      const laneFieldItem = laneFields_arr[i];
+
+      const {
+        source,
+        destination,
+        truckType,
+        numberOfTrips,
+        loadType,
+        priceCapPerTrip,
+        tickPrice,
+      } = laneFieldItem;
+
+      if (
+        source === '' ||
+        destination === '' ||
+        truckType === '' ||
+        numberOfTrips === '' ||
+        loadType === '' ||
+        priceCapPerTrip === '' ||
+        tickPrice === ''
+      ) {
+        setCanSaveLaneDetails(false);
+        break;
+      } else {
+        setCanSaveLaneDetails(true);
+      }
+    }
+
     dispatch(toggle_canSaveLaneAuction(canSaveLaneDetails && !!auctionName));
-  }, [dispatch, canSaveLaneDetails, auctionName]);
+  }, [laneFields, dispatch, canSaveLaneDetails, auctionName]);
 
   useEffect(() => {
     if (canSaveLaneDetails && isCreateNewAuctionClicked) {
@@ -53,9 +85,7 @@ const LaneAuctionForm = () => {
   // console.log(laneFields);
 
   const handleSetLaneFormData = useCallback(
-    (laneFormData: LaneAuctionData, laneNumber: number, canSave: boolean) => {
-      setCanSaveLaneDetails(canSave);
-
+    (laneFormData: LaneAuctionData, laneNumber: number) => {
       const temp_laneFields = { ...laneFields };
       temp_laneFields[laneNumber] = laneFormData;
       setLaneFields(temp_laneFields);

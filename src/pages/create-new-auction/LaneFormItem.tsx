@@ -12,11 +12,7 @@ interface LaneFormItemProps {
   laneNumber: number;
   totalLanes: number;
   handleDeleteLane: (laneNumber: number) => void;
-  handleSetLaneFormData: (
-    laneFormData: LaneAuctionData,
-    laneNumber: number,
-    canSave: boolean
-  ) => void;
+  handleSetLaneFormData: (laneFormData: LaneAuctionData, laneNumber: number) => void;
 }
 
 const LaneFormItem: FC<LaneFormItemProps> = ({
@@ -39,20 +35,10 @@ const LaneFormItem: FC<LaneFormItemProps> = ({
   const { source, destination, truckType, numberOfTrips, loadType, priceCapPerTrip, tickPrice } =
     laneFormData;
 
-  const canSave = [
-    source,
-    destination,
-    truckType,
-    numberOfTrips,
-    loadType,
-    priceCapPerTrip,
-    tickPrice,
-  ].every(Boolean);
-
   useEffect(() => {
-    handleSetLaneFormData(laneFormData, laneNumber, canSave);
+    handleSetLaneFormData(laneFormData, laneNumber);
     // eslint-disable-next-line
-  }, [laneFormData, laneNumber, canSave]);
+  }, [laneFormData, laneNumber]);
 
   const onChangeSource = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
